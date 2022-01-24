@@ -1,0 +1,136 @@
+To install this datapack on single player:
+* go to the single player button from the main menu
+* select the world you want to add the datapack on
+* click on "edit" at the bottom
+* click on "open world folder", it will open a file browser
+* open the datapacks folder
+* place the datapack here
+* done!
+
+
+To install this datapack on a multiplayer server:
+* open the folder where your server is stored on your computer
+* open the world folder
+* open the datapacks folder
+* place the datapack here
+* done!
+
+Once installed you should be able to use the command "/trigger customCommandExample" in game
+To test it, open your world were you installed the datapack and try the command:
+
+/trigger customCommandExample
+
+If your character in game says "test command" in the chat then the datapack is working!
+
+You can edit text files inside the folder called "data" to add your own custom commands.
+All your custom commands will be usable on a server even if you are not an admin,
+and they all will start with "/trigger"
+
+Why would you want to add a custom command? Well there are many uses!
+
+    On my private server me and my friends have lots of bases and farms, so much that we forget
+    were all the bases are located, I especially forget the chords of farms from other players
+    since i don't use them often. So on my server I made a custom command to write in the chat
+    a list of coordinates from all our bases and farms.
+
+    Another cool command to do on a server is a command to teleport a player into their base.
+    Normally teleporting players is restricted only to admins, but a custom command via
+    /trigger allows non-admins to use the command.
+
+    A use for custom commands is doing repetitive commands. For example if you find yourself
+    going into creative mode to then spawn a certain item to then teleporting yourself you can
+    make a command that does all those tasks in order using only 1 command instead of 3.
+
+How do I add another command apart from the included example?
+
+    Adding your own command is easy. You just need to edit a few text files. Here's what you
+    need to know!
+
+    These instructions are on a folder called yourCustomCommand, inside it we have a  folder
+    called "data", open it up, then go to the "yourcustomcommands" folder, next open the
+    "functions" folder, and in here you should see 3 files: init.mcfunction, tick.mcfunction
+    and longcommand.mcfunction.
+    
+    To set up your own commands you will only need to edit 2 files: init.mcfunction &
+    tick.mcfunction. To edit them, right click them and select "open with" and choose
+    notepad or any text editor.
+
+    init.mcfunction is where you name your custom commands and tick.mcfunction is where you
+    tell minecarft whet those commands are supposed to do.
+
+    init.mcfunction is called "init" for short for initialization because there is where the
+    initial values, like the names for the commands, are stored. Te other function is called
+    tick because everything in there is running every in game tick. In minecraft time is
+    divided into 20 ticks per second, so stuff inside tick.mcfunction happens 20 times every
+    second. On each game tick the game is checking if players are requesting to use your
+    custom commands, and if in one particular tick it's true that someone requests a command
+    then it executes the command, if no command is being requested then nothing happens.
+
+    Before you edit the init and tick mcfunction files you need to know what commands will
+    achieve what you want in game. So go to your world in mineraft and type a command in
+    the chat. There are plenty of tutorials of how to do various stuff with commands, so I
+    recommend you look up a tutorial for your desired outcome. For example "how to teleport
+    myself to my base with command in minecraft" will point you in the right direction if 
+    that's what you want. Once you know what command you need, test it in game and copy
+    the command to your clipboard.
+
+    Now you can come back to the init and tick mcfunction files. Start by editing
+    init.mcfunction.
+
+    Inside init.mcfunction you'll see instructions on what to do in more detail, but the gist
+    of it is that you want to come up with a command alias. A command aliases is the word that
+    triggers your desired command. for the "teleport to base" example you could go with an
+    alias like "goToBase". Meaning your command will be "/trigger goToBase".
+
+    To do this add a new line with this text:
+
+    scoreboard objectives add goToBase trigger
+
+    If you want to add multiple custom commands you will need to add multiple lines with
+    the corresponding command alias, for example a setup for adding 3 commands will look
+    like this:
+
+    scoreboard objectives add goToBase trigger
+    scoreboard objectives add giveMeFood trigger
+    scoreboard objectives add doubleMyHearts trigger
+
+    Remember that we add these lines of text inside init.mcfunction. Since inside
+    init.mcfunction is where we choose the names of the commands.
+
+    To tell minecraft what those commands to save your changes and open tick.mcfunction. Again
+    inisde tick.mcfunction you will find more detailed instructions but I will briefly explain
+    the bigger picture here too.
+
+    Basically, you want to add those 3 lines of text per custom command:
+
+    scoreboard players enable @a COMMAND-ALIAS
+    execute as @a[scores={COMMAND-ALIAS=1..}] run COMMANDS-TO-RUN
+    scoreboard players set @a COMMAND-ALIAS 0
+
+    replace COMMAND-ALIAS from those 3 lines with the command name you picked, for example
+    in the case of "giveMeFood" we replace the following:
+
+    scoreboard players enable @a giveMeFood
+    execute as @a[scores={giveMeFood=1..}] run COMMANDS-TO-RUN
+    scoreboard players set @a giveMeFood 0
+
+    Now we fill in the command that actually gives us food in mineraft, for example:
+
+    scoreboard players enable @a giveMeFood
+    execute as @a[scores={giveMeFood=1..}] run give @a minecraft:cooked_beef 64
+    scoreboard players set @a giveMeFood 0
+
+    We don't add the "/" as we do in game, so we replaced "COMMANDS-TO-RUN" with 
+    "give @a minecraft:cooked_beef 64". This will do the same effect as if an admin
+    typed "/give @a minecraft:cooked_beef 64" thus giving the player a stack of cooked beef.
+
+    If you want a custom command to execute more than 1 command you need to use functions,
+    an explanation is included inside tick.mcfunction
+
+    
+
+
+
+
+
+
